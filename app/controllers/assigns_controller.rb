@@ -29,7 +29,7 @@ class AssignsController < ApplicationController
 
     if assigned_user == assign.team.owner
       'リーダーは削除できません。'
-    elsif assined_user != (current_user || assign.team.owner)
+    elsif assigned_user != current_user && current_user != assign.team.owner
       'リーダー以外は、他のメンバーを削除出来ません。'
     elsif Assign.where(user_id: assigned_user.id).count == 1
       'このユーザーはこのチームにしか所属していないため、削除できません。'
