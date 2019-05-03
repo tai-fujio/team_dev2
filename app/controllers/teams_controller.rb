@@ -45,6 +45,17 @@ class TeamsController < ApplicationController
     redirect_to teams_url, notice: 'チーム削除に成功しました！'
   end
 
+  def transfer_owner
+    @team = Team.friendly.find(params[:team_id])
+    @team.owner_id = Assign.find(params[:id]).user.id
+    email = User.find(@team.owner_id).email
+    TeamMailer.team_mail(email, @team).deliver
+    if @team.save
+      redirect_to @team, notice: 'チームリーダーを変更しました！'
+    else
+    end
+  end
+
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
@@ -56,6 +67,14 @@ class TeamsController < ApplicationController
   end
 
   def team_params
-    params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id]
+    params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id team_id]
+  end
+
+  def assign_params
+    params[:email]
+  end
+
+  def email_reliable?(address)
+    address.match(/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i)
   end
 end
