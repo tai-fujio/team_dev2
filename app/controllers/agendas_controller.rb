@@ -22,14 +22,8 @@ class AgendasController < ApplicationController
   end
 
   def destroy
-    # byebug
-    render :index if current_user != @agenda.user || current_user != @agenda.team.owner
-
+    @agenda.target_user = current_user
     if @agenda.destroy
-      @agenda.team.assigns.each do |assign|
-        email = assign.user.email
-        AgendaMailer.agenda_mail(email, @agenda).deliver
-      end
       redirect_to dashboard_path, notice: "アジェンダ「#{@agenda.title}」を削除しました！"
     else
       render :index
