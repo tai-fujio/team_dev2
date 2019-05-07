@@ -1,5 +1,5 @@
 class AgendasController < ApplicationController
-  # before_action :set_agenda, only: %i[show edit update destroy]
+  before_action :set_agenda, only: %i[show edit update destroy]
 
   def index
     @agendas = Agenda.all
@@ -18,6 +18,21 @@ class AgendasController < ApplicationController
       redirect_to dashboard_url, notice: 'アジェンダ作成に成功しました！'
     else
       render :new
+    end
+  end
+
+  def destroy
+    # byebug
+    render :index if current_user != @agenda.user || current_user != @agenda.team.owner
+
+    if @agenda.destroy
+      @agenda.team.assigns.each do |assign|
+        email = assign.user.email
+        AgendaMailer.agenda_mail(email, @agenda).deliver
+      end
+      redirect_to dashboard_path, notice: "アジェンダ「#{@agenda.title}」を削除しました！"
+    else
+      render :index
     end
   end
 
