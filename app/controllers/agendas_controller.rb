@@ -17,16 +17,15 @@ class AgendasController < ApplicationController
     if current_user.save && @agenda.save
       redirect_to dashboard_url, notice: 'アジェンダ作成に成功しました！'
     else
-      render :new
+      redirect_to dashboard_url, notice: @agenda.errors&.full_messages&.first
     end
   end
 
   def destroy
-    @agenda.target_user = current_user
     if @agenda.destroy
       redirect_to dashboard_path, notice: "アジェンダ「#{@agenda.title}」を削除しました！"
     else
-      render :index
+      render :index, notice: @agenda.errors&.full_messages&.first
     end
   end
 

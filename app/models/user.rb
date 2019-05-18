@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :agendas, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  validates :email, email: true
+
   belongs_to :keep_team, optional: true, class_name: 'Team', foreign_key: :keep_team_id
 
   mount_uploader :icon, ImageUploader
