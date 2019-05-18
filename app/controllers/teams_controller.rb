@@ -45,8 +45,9 @@ class TeamsController < ApplicationController
 
   def transfer_owner
     repository = TeamTransferService.new(params)
-    repository.transfer_owner
-    redirect_to @team, notice: 'チームリーダーを変更しました！' if repository.transfer_owner
+    redirect_to repository.team, notice: repository.transfer ?
+      'チームリーダーを変更しました！' :
+      'チームリーダーを変更することができませんでした'
   end
 
   def dashboard
