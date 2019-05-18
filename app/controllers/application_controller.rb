@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
   private
 
   def set_working_team
-    @working_team = current_user.keep_team.id ? Team.find(current_user.keep_team.id) : Team.first
+    @working_team = current_user.keep_team
   end
 end
