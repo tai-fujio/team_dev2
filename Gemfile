@@ -8,7 +8,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rails', '~> 5.2.0'
 
 # Middleware
-gem 'pg', '>= 0.18', '< 2.0'
+# FIXME: return pg
+gem 'mysql2'
 gem 'puma', '~> 3.11'
 
 # Frontend

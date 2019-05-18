@@ -13,17 +13,28 @@ class User < ApplicationRecord
 
   mount_uploader :icon, ImageUploader
 
-  def self.find_or_create_by_email(email)
-    user = find_or_initialize_by(email: email)
-    if user.new_record?
-      user.password = generate_password
-      user.save!
-      AssignMailer.assign_mail(user.email, user.password).deliver
+  class << self
+    def current_user=(user)
+      Thread.current[:current_user] = user
     end
-    user
+
+    def current_user
+      Thread.current[:current_user]
+    end
+
+    def find_or_create_by_email(email)
+      user = find_or_initialize_by(email: email)
+      if user.new_record?
+        user.password = generate_password
+        user.save!
+        AssignMailer.assign_mail(user.email, user.password).deliver
+      end
+      user
+    end
+
+    def generate_password
+      SecureRandom.hex(10)
+    end
   end
 
-  def self.generate_password
-    SecureRandom.hex(10)
-  end
 end
