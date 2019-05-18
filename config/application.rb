@@ -19,6 +19,9 @@ Bundler.require(*Rails.groups)
 
 module Keijiban
   class Application < Rails::Application
+
+    config.autoload_paths += Dir["#{config.root}/app/validators"]
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
     config.time_zone = 'Asia/Tokyo'

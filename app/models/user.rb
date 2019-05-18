@@ -37,4 +37,23 @@ class User < ApplicationRecord
     end
   end
 
+  def change_keep_team(current_team)
+    self.keep_team_id = current_team.id
+    self.save!
+  end
+
+  def keep_team
+    unCheckedAssign = Assign.find_by(
+      user_id: self.id,
+      team_id: self.keep_team_id
+    )
+    if unCheckedAssign.nil?
+      assigned_team = self.teams.first
+      return Team.first if assigned_team.nil?
+      self.change_keep_team(assigned_team)
+      return assigned_team
+    else
+      return unCheckedAssign.team
+    end
+  end
 end

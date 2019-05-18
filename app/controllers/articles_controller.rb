@@ -11,7 +11,7 @@ class ArticlesController < ApplicationController
     @comments = @article.comments
     @comment = @article.comments.build
     @working_team = @article.team
-    change_keep_team(current_user, @working_team)
+    current_user.change_keep_team(@working_team)
   end
 
   def new
@@ -21,7 +21,7 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    change_keep_team(current_user, @article.team)
+    current_user.change_keep_team(@article.team)
   end
 
   def create

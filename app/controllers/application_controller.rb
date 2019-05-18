@@ -1,24 +1,18 @@
 class ApplicationController < ActionController::Base
-  before_action :init_team, if: :user_signed_in?
+
+  include TeamHelper
+
+  before_action :first_game, if: :user_signed_in?
   before_action :set_working_team, if: :user_signed_in?
-  before_filter :set_current_user
+  before_action :set_current_user
 
   def set_current_user
     User.current_user = current_user
   end
 
-  def change_keep_team(user, current_team)
-    user.keep_team_id = current_team.id
-    user.save!
-  end
-
   private
 
   def set_working_team
-    @working_team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : Team.first
-  end
-
-  def init_team
-    first_game()
+    @working_team = current_user.keep_team.id ? Team.find(current_user.keep_team.id) : Team.first
   end
 end

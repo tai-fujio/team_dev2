@@ -8,7 +8,7 @@ class TeamsController < ApplicationController
 
   def show
     @working_team = @team
-    change_keep_team(current_user, @team)
+    current_user.change_keep_team(@team)
   end
 
   def new
@@ -57,7 +57,7 @@ class TeamsController < ApplicationController
   end
 
   def dashboard
-    @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
+    @team = current_user.keep_team
   end
 
   private

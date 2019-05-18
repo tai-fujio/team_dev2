@@ -6,10 +6,8 @@ class Agenda < ApplicationRecord
   before_destroy :check_authority
   after_destroy :send_delete_agenda_mail
 
-  attr_accessor :target_user
-
   def check_authority
-    target_user == self.user || target_user == self.team.owner
+    User.current_user == self.user || User.current_user == self.team.owner
   end
 
   def send_delete_agenda_mail
