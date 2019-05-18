@@ -2,7 +2,7 @@ class Team < ApplicationRecord
   include FriendlyId
   friendly_id :name
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true, title: true
 
   belongs_to :owner, class_name: 'User', foreign_key: :owner_id
   has_many :assigns, dependent: :destroy
@@ -11,6 +11,8 @@ class Team < ApplicationRecord
   has_many :agendas, dependent: :destroy
   has_many :users, foreign_key: :keep_team_id
   mount_uploader :icon, ImageUploader
+
+  after_save { self.invite_member(self.owner) }
 
   def invite_member(user)
     assigns.create(user: user)

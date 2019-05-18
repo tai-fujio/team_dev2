@@ -21,9 +21,7 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new(team_params)
-    @team.owner = current_user
     if @team.save
-      @team.invite_member(@team.owner)
       redirect_to @team, notice: 'チーム作成に成功しました！'
     else
       flash.now[:error] = '保存に失敗しました、、'
@@ -46,14 +44,9 @@ class TeamsController < ApplicationController
   end
 
   def transfer_owner
-    @team = Team.friendly.find(params[:team_id])
-    @team.owner_id = Assign.find(params[:id]).user.id
-    email = User.find(@team.owner_id).email
-    TeamMailer.team_mail(email, @team).deliver
-    if @team.save
-      redirect_to @team, notice: 'チームリーダーを変更しました！'
-    else
-    end
+    repository = TeamTransferService.new(params)
+    repository.transfer_owner
+    redirect_to @team, notice: 'チームリーダーを変更しました！' if repository.transfer_owner
   end
 
   def dashboard
@@ -67,7 +60,15 @@ class TeamsController < ApplicationController
   end
 
   def team_params
-    params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id team_id]
+    params.fetch(:team, {}).permit(
+      :name,
+      :icon,
+      :icon_cache,
+      :keep_team_id,
+      :team_id
+    ).merge(
+      owner_id: current_user.id
+    )
   end
 
   def assign_params

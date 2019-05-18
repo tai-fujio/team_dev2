@@ -20,7 +20,7 @@ class AssignInviteService < BaseService
   def create
     return false if !validate
 
-    return team.assigns.create(user: user)
+    return team.invite_member(user)
   end
 
   private
