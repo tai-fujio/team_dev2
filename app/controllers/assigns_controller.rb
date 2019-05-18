@@ -6,7 +6,7 @@ class AssignsController < ApplicationController
     repository = AssignInviteService.new(params)
     redirect_to team_url(repository.team), notice: repository.create ?
       'アサインしました！' :
-      'アサイン失敗しました！'
+      repository.errors.first
   end
 
   def destroy
