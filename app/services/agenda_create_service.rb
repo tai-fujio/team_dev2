@@ -7,7 +7,7 @@ class AgendaCreateService < BaseService
     end
   end
 
-  concerning :Agendauilder do
+  concerning :AgendaBuilder do
     attr_reader :title
     def agenda
       @agenda ||= User.current_user.agendas.build(title: title)
