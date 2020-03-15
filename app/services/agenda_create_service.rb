@@ -18,7 +18,7 @@ class AgendaCreateService < BaseService
     build_associate
     return false if !validate
 
-    build_associate
+    # build_associate
 
     if agenda.save
       @errors.push('team is not valid') unless User.current_user&.change_keep_team(team)

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-module Allowable
-  def can?(*args)
-    Ability.allowed?(*args)
-  end
-end
+# module Allowable
+#   def can?(*args)
+#     Ability.allowed?(*args)
+#   end
+# end
 
 
 class BaseService
-  include Allowable
+  # include Allowable
 
   attr_accessor :errors
 
