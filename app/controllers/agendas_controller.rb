@@ -11,22 +11,17 @@ class AgendasController < ApplicationController
   end
 
   def create
-    @agenda = current_user.agendas.build(title: params[:title])
-    @agenda.team = Team.friendly.find(params[:team_id])
-    current_user.keep_team_id = @agenda.team.id
-    if current_user.save && @agenda.save
-      redirect_to dashboard_url, notice: 'アジェンダ作成に成功しました！'
-    else
-      render :new
-    end
+    repository = AgendaCreateService.new(params)
+    redirect_to dashboard_url, notice: repository.create ?
+      'アジェンダ作成に成功しました！' :
+      repository.errors.first
   end
 
   def destroy
-    @agenda.target_user = current_user
     if @agenda.destroy
       redirect_to dashboard_path, notice: "アジェンダ「#{@agenda.title}」を削除しました！"
     else
-      render :index
+      render :index, notice: @agenda.errors&.full_messages&.first
     end
   end
 
@@ -34,9 +29,5 @@ class AgendasController < ApplicationController
 
   def set_agenda
     @agenda = Agenda.find(params[:id])
-  end
-
-  def agenda_params
-    params.fetch(:agenda, {}).permit %i[title description]
   end
 end

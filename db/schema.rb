@@ -12,10 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2018_10_05_035232) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "agendas", force: :cascade do |t|
+  create_table "agendas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
@@ -26,7 +23,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.index ["user_id"], name: "index_agendas_on_user_id"
   end
 
-  create_table "articles", force: :cascade do |t|
+  create_table "articles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "team_id"
     t.string "title", null: false
@@ -40,7 +37,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.index ["user_id"], name: "index_articles_on_user_id"
   end
 
-  create_table "assigns", force: :cascade do |t|
+  create_table "assigns", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "team_id", null: false
     t.datetime "created_at", null: false
@@ -49,7 +46,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.index ["user_id"], name: "index_assigns_on_user_id"
   end
 
-  create_table "comments", force: :cascade do |t|
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "article_id"
     t.text "content"
     t.bigint "user_id"
@@ -59,7 +56,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "owner_id"
     t.datetime "created_at", null: false
@@ -68,7 +65,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.index ["owner_id"], name: "index_teams_on_owner_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -77,8 +74,8 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "icon"
@@ -95,5 +92,4 @@ ActiveRecord::Schema.define(version: 2018_10_05_035232) do
   add_foreign_key "assigns", "teams"
   add_foreign_key "assigns", "users"
   add_foreign_key "comments", "articles"
-  add_foreign_key "teams", "users", column: "owner_id"
 end

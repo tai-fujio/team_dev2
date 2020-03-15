@@ -6,6 +6,6 @@ class CreateTeams < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    add_foreign_key :teams, :users, column: :owner_id
+    # add_foreign_key :teams, :users, column: :owner_id
   end
 end
