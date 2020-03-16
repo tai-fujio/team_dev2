@@ -54,12 +54,4 @@
     <!-- /.card -->
   </div>
   <!-- ./col -->
-  <% @members = [] %>
-  <% @users = User.all%>
-  <% @users.each{|n| @members << n[:email]}%>
-  <%@members.each_with_index do |n,i|%>
-  <%=i%>
-  <%=n%>
-  <br>
-  <%end%>
 </div>
