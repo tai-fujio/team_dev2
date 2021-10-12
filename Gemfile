@@ -11,7 +11,7 @@ gem 'rails', '~> 5.2.0'
 # FIXME: return pg
 # gem 'mysql2'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 4.3'
 
 # Frontend
 gem 'coderay'
